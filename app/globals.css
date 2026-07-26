@@ -1,0 +1,605 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap');
+
+/* VS Code Dark+ (Default) */
+.theme-vscode-dark {
+  --vscode-bg: #1e1e1e;
+  --vscode-sidebar: #252526;
+  --vscode-activity: #333333;
+  --vscode-activity-hover: #424242;
+  --vscode-activity-active: #1e1e1e;
+  --vscode-tab: #2d2d2d;
+  --vscode-tab-active: #1e1e1e;
+  --vscode-border: #3c3c3c;
+  --vscode-text: #cccccc;
+  --vscode-text-secondary: #858585;
+  --vscode-line: #2d2d2d;
+  --vscode-hover: #2a2d2e;
+  --vscode-selection: #264f78;
+  --vscode-status: #007acc;
+  --vscode-input: #3c3c3c;
+  --vscode-button: #007acc;
+  --vscode-button-hover: #006bb3;
+  --vscode-accent: #007acc;
+  --sy-kw: #569cd6;
+  --sy-str: #ce9178;
+  --sy-num: #b5cea8;
+  --sy-cmt: #6a9955;
+  --sy-type: #4ec9b0;
+  --sy-fn: #dcdcaa;
+  --sy-builtin: #dcdcaa;
+  --sy-op: #d4d4d4;
+  --sy-tmpl: #ce9178;
+  --sy-punc: #d4d4d4;
+}
+
+/* VS Code Light */
+.theme-vscode-light {
+  --vscode-bg: #ffffff;
+  --vscode-sidebar: #f3f3f3;
+  --vscode-activity: #f3f3f3;
+  --vscode-activity-hover: #e8e8e8;
+  --vscode-activity-active: #ffffff;
+  --vscode-tab: #ececec;
+  --vscode-tab-active: #ffffff;
+  --vscode-border: #e0e0e0;
+  --vscode-text: #333333;
+  --vscode-text-secondary: #666666;
+  --vscode-line: #f0f0f0;
+  --vscode-hover: #e8e8e8;
+  --vscode-selection: #add6ff;
+  --vscode-status: #007acc;
+  --vscode-input: #ffffff;
+  --vscode-button: #007acc;
+  --vscode-button-hover: #006bb3;
+  --vscode-accent: #007acc;
+  --sy-kw: #0000ff;
+  --sy-str: #a31515;
+  --sy-num: #098658;
+  --sy-cmt: #008000;
+  --sy-type: #267f99;
+  --sy-fn: #795e26;
+  --sy-builtin: #795e26;
+  --sy-op: #000000;
+  --sy-tmpl: #a31515;
+  --sy-punc: #000000;
+}
+
+/* Monokai */
+.theme-monokai {
+  --vscode-bg: #272822;
+  --vscode-sidebar: #2e2f2a;
+  --vscode-activity: #3e3d32;
+  --vscode-activity-hover: #4a4a3e;
+  --vscode-activity-active: #272822;
+  --vscode-tab: #2e2f2a;
+  --vscode-tab-active: #272822;
+  --vscode-border: #49483e;
+  --vscode-text: #f8f8f2;
+  --vscode-text-secondary: #a6a68a;
+  --vscode-line: #3e3d32;
+  --vscode-hover: #3e3d32;
+  --vscode-selection: #49483e;
+  --vscode-status: #a6e22e;
+  --vscode-input: #49483e;
+  --vscode-button: #a6e22e;
+  --vscode-button-hover: #8fc21e;
+  --vscode-accent: #a6e22e;
+  --sy-kw: #f92672;
+  --sy-str: #e6db74;
+  --sy-num: #ae81ff;
+  --sy-cmt: #75715e;
+  --sy-type: #66d9ef;
+  --sy-fn: #a6e22e;
+  --sy-builtin: #a6e22e;
+  --sy-op: #f8f8f2;
+  --sy-tmpl: #e6db74;
+  --sy-punc: #f8f8f2;
+}
+
+/* Nord */
+.theme-nord {
+  --vscode-bg: #2e3440;
+  --vscode-sidebar: #3b4252;
+  --vscode-activity: #434c5e;
+  --vscode-activity-hover: #4c566a;
+  --vscode-activity-active: #2e3440;
+  --vscode-tab: #3b4252;
+  --vscode-tab-active: #2e3440;
+  --vscode-border: #4c566a;
+  --vscode-text: #eceff4;
+  --vscode-text-secondary: #81a1c1;
+  --vscode-line: #3b4252;
+  --vscode-hover: #434c5e;
+  --vscode-selection: #434c5e;
+  --vscode-status: #88c0d0;
+  --vscode-status-text: #1e2d3d;
+  --vscode-input: #4c566a;
+  --vscode-button: #88c0d0;
+  --vscode-button-hover: #6da5b5;
+  --vscode-accent: #88c0d0;
+  --vscode-button-text: #1e2d3d;
+  --sy-kw: #81a1c1;
+  --sy-str: #a3be8c;
+  --sy-num: #b48ead;
+  --sy-cmt: #616e88;
+  --sy-type: #8fbcbb;
+  --sy-fn: #88c0d0;
+  --sy-builtin: #88c0d0;
+  --sy-op: #eceff4;
+  --sy-tmpl: #a3be8c;
+  --sy-punc: #eceff4;
+}
+
+/* One Dark Pro */
+.theme-one-dark {
+  --vscode-bg: #282c34;
+  --vscode-sidebar: #21252b;
+  --vscode-activity: #2c313a;
+  --vscode-activity-hover: #3a3f4b;
+  --vscode-activity-active: #282c34;
+  --vscode-tab: #21252b;
+  --vscode-tab-active: #282c34;
+  --vscode-border: #3a3f4b;
+  --vscode-text: #abb2bf;
+  --vscode-text-secondary: #5c6370;
+  --vscode-line: #21252b;
+  --vscode-hover: #2c313a;
+  --vscode-selection: #3a3f4b;
+  --vscode-status: #61afef;
+  --vscode-input: #3a3f4b;
+  --vscode-button: #61afef;
+  --vscode-button-hover: #4d8cc9;
+  --vscode-accent: #61afef;
+  --sy-kw: #c678dd;
+  --sy-str: #98c379;
+  --sy-num: #d19a66;
+  --sy-cmt: #5c6370;
+  --sy-type: #e5c07b;
+  --sy-fn: #61afef;
+  --sy-builtin: #61afef;
+  --sy-op: #abb2bf;
+  --sy-tmpl: #98c379;
+  --sy-punc: #abb2bf;
+}
+
+/* GitHub Dark */
+.theme-github-dark {
+  --vscode-bg: #0d1117;
+  --vscode-sidebar: #161b22;
+  --vscode-activity: #21262d;
+  --vscode-activity-hover: #30363d;
+  --vscode-activity-active: #0d1117;
+  --vscode-tab: #161b22;
+  --vscode-tab-active: #0d1117;
+  --vscode-border: #30363d;
+  --vscode-text: #c9d1d9;
+  --vscode-text-secondary: #8b949e;
+  --vscode-line: #21262d;
+  --vscode-hover: #21262d;
+  --vscode-selection: #30363d;
+  --vscode-status: #58a6ff;
+  --vscode-input: #21262d;
+  --vscode-button: #238636;
+  --vscode-button-hover: #2ea043;
+  --vscode-accent: #58a6ff;
+  --sy-kw: #ff7b72;
+  --sy-str: #a5d6ff;
+  --sy-num: #79c0ff;
+  --sy-cmt: #8b949e;
+  --sy-type: #ffa657;
+  --sy-fn: #d2a8ff;
+  --sy-builtin: #d2a8ff;
+  --sy-op: #c9d1d9;
+  --sy-tmpl: #a5d6ff;
+  --sy-punc: #c9d1d9;
+}
+
+/* Dracula */
+.theme-dracula {
+  --vscode-bg: #282a36;
+  --vscode-sidebar: #21222c;
+  --vscode-activity: #343541;
+  --vscode-activity-hover: #3d3e4d;
+  --vscode-activity-active: #282a36;
+  --vscode-tab: #21222c;
+  --vscode-tab-active: #282a36;
+  --vscode-border: #343541;
+  --vscode-text: #f8f8f2;
+  --vscode-text-secondary: #6272a4;
+  --vscode-line: #343541;
+  --vscode-hover: #343541;
+  --vscode-selection: #343541;
+  --vscode-status: #bd93f9;
+  --vscode-input: #343541;
+  --vscode-button: #bd93f9;
+  --vscode-button-hover: #9a6fd4;
+  --vscode-accent: #bd93f9;
+  --sy-kw: #ff79c6;
+  --sy-str: #f1fa8c;
+  --sy-num: #bd93f9;
+  --sy-cmt: #6272a4;
+  --sy-type: #8be9fd;
+  --sy-fn: #50fa7b;
+  --sy-builtin: #50fa7b;
+  --sy-op: #f8f8f2;
+  --sy-tmpl: #f1fa8c;
+  --sy-punc: #f8f8f2;
+}
+
+/* Tokyo Night */
+.theme-tokyo-night {
+  --vscode-bg: #1a1b26;
+  --vscode-sidebar: #16161e;
+  --vscode-activity: #1e1e2e;
+  --vscode-activity-hover: #292e42;
+  --vscode-activity-active: #1a1b26;
+  --vscode-tab: #16161e;
+  --vscode-tab-active: #1a1b26;
+  --vscode-border: #292e42;
+  --vscode-text: #c0caf5;
+  --vscode-text-secondary: #565f89;
+  --vscode-line: #292e42;
+  --vscode-hover: #1e1e2e;
+  --vscode-selection: #364a82;
+  --vscode-status: #7aa2f7;
+  --vscode-input: #292e42;
+  --vscode-button: #7aa2f7;
+  --vscode-button-hover: #5d8fe4;
+  --vscode-accent: #7aa2f7;
+  --sy-kw: #bb9af7;
+  --sy-str: #9ece6a;
+  --sy-num: #ff9e64;
+  --sy-cmt: #565f89;
+  --sy-type: #2ac3de;
+  --sy-fn: #7aa2f7;
+  --sy-builtin: #7aa2f7;
+  --sy-op: #c0caf5;
+  --sy-tmpl: #9ece6a;
+  --sy-punc: #c0caf5;
+}
+
+/* SynthWave '84 */
+.theme-synthwave {
+  --vscode-bg: #262335;
+  --vscode-sidebar: #1e1c2b;
+  --vscode-activity: #2e2a40;
+  --vscode-activity-hover: #3d3754;
+  --vscode-activity-active: #262335;
+  --vscode-tab: #1e1c2b;
+  --vscode-tab-active: #262335;
+  --vscode-border: #3d3754;
+  --vscode-text: #f4eee8;
+  --vscode-text-secondary: #a098c0;
+  --vscode-line: #3d3754;
+  --vscode-hover: #2e2a40;
+  --vscode-selection: #544a7a;
+  --vscode-status: #ff7edb;
+  --vscode-status-text: #1a1530;
+  --vscode-input: #3d3754;
+  --vscode-button: #ff7edb;
+  --vscode-button-hover: #e06ac4;
+  --vscode-accent: #ff7edb;
+  --vscode-button-text: #1a1530;
+  --sy-kw: #ff7edb;
+  --sy-str: #ffea76;
+  --sy-num: #bf7af0;
+  --sy-cmt: #6c6783;
+  --sy-type: #7ddfff;
+  --sy-fn: #f29e74;
+  --sy-builtin: #f29e74;
+  --sy-op: #f4eee8;
+  --sy-tmpl: #ffea76;
+  --sy-punc: #f4eee8;
+}
+
+/* Catppuccin Mocha */
+.theme-catppuccin {
+  --vscode-bg: #1e1e2e;
+  --vscode-sidebar: #181825;
+  --vscode-activity: #24243a;
+  --vscode-activity-hover: #2e2e48;
+  --vscode-activity-active: #1e1e2e;
+  --vscode-tab: #181825;
+  --vscode-tab-active: #1e1e2e;
+  --vscode-border: #313244;
+  --vscode-text: #cdd6f4;
+  --vscode-text-secondary: #6c7086;
+  --vscode-line: #313244;
+  --vscode-hover: #24243a;
+  --vscode-selection: #45475a;
+  --vscode-status: #cba6f7;
+  --vscode-status-text: #1e1e2e;
+  --vscode-input: #313244;
+  --vscode-button: #cba6f7;
+  --vscode-button-hover: #b48ef0;
+  --vscode-accent: #cba6f7;
+  --vscode-button-text: #1e1e2e;
+  --sy-kw: #cba6f7;
+  --sy-str: #a6e3a1;
+  --sy-num: #fab387;
+  --sy-cmt: #6c7086;
+  --sy-type: #89b4fa;
+  --sy-fn: #89dceb;
+  --sy-builtin: #89dceb;
+  --sy-op: #cdd6f4;
+  --sy-tmpl: #a6e3a1;
+  --sy-punc: #cdd6f4;
+}
+
+/* Night Owl */
+.theme-night-owl {
+  --vscode-bg: #011627;
+  --vscode-sidebar: #01111d;
+  --vscode-activity: #0a1f2f;
+  --vscode-activity-hover: #14344e;
+  --vscode-activity-active: #011627;
+  --vscode-tab: #01111d;
+  --vscode-tab-active: #011627;
+  --vscode-border: #14344e;
+  --vscode-text: #d6deeb;
+  --vscode-text-secondary: #637d9a;
+  --vscode-line: #14344e;
+  --vscode-hover: #0a1f2f;
+  --vscode-selection: #1d3b53;
+  --vscode-status: #82aaff;
+  --vscode-input: #14344e;
+  --vscode-button: #82aaff;
+  --vscode-button-hover: #6991e0;
+  --vscode-accent: #82aaff;
+  --sy-kw: #c792ea;
+  --sy-str: #ecc48d;
+  --sy-num: #f78c6c;
+  --sy-cmt: #637777;
+  --sy-type: #82aaff;
+  --sy-fn: #82aaff;
+  --sy-builtin: #82aaff;
+  --sy-op: #d6deeb;
+  --sy-tmpl: #ecc48d;
+  --sy-punc: #d6deeb;
+}
+
+/* Gruvbox Dark */
+.theme-gruvbox {
+  --vscode-bg: #282828;
+  --vscode-sidebar: #1d2021;
+  --vscode-activity: #32302f;
+  --vscode-activity-hover: #3c3836;
+  --vscode-activity-active: #282828;
+  --vscode-tab: #1d2021;
+  --vscode-tab-active: #282828;
+  --vscode-border: #504945;
+  --vscode-text: #ebdbb2;
+  --vscode-text-secondary: #928374;
+  --vscode-line: #504945;
+  --vscode-hover: #32302f;
+  --vscode-selection: #665c54;
+  --vscode-status: #fabd2f;
+  --vscode-status-text: #1d2021;
+  --vscode-input: #504945;
+  --vscode-button: #fabd2f;
+  --vscode-button-hover: #d8a142;
+  --vscode-accent: #fabd2f;
+  --vscode-button-text: #1d2021;
+  --sy-kw: #fb4934;
+  --sy-str: #b8bb26;
+  --sy-num: #d3869b;
+  --sy-cmt: #928374;
+  --sy-type: #fabd2f;
+  --sy-fn: #8ec07c;
+  --sy-builtin: #8ec07c;
+  --sy-op: #ebdbb2;
+  --sy-tmpl: #b8bb26;
+  --sy-punc: #ebdbb2;
+}
+
+/* Ayu Dark */
+.theme-ayu-dark {
+  --vscode-bg: #0b0e14;
+  --vscode-sidebar: #0f131a;
+  --vscode-activity: #141a24;
+  --vscode-activity-hover: #1c2435;
+  --vscode-activity-active: #0b0e14;
+  --vscode-tab: #0f131a;
+  --vscode-tab-active: #0b0e14;
+  --vscode-border: #1c2435;
+  --vscode-text: #b3b1ad;
+  --vscode-text-secondary: #5c5f66;
+  --vscode-line: #1c2435;
+  --vscode-hover: #141a24;
+  --vscode-selection: #243148;
+  --vscode-status: #e6b450;
+  --vscode-status-text: #0b0e14;
+  --vscode-input: #1c2435;
+  --vscode-button: #e6b450;
+  --vscode-button-hover: #c89c3a;
+  --vscode-accent: #e6b450;
+  --vscode-button-text: #0b0e14;
+  --sy-kw: #ff7733;
+  --sy-str: #c2d94c;
+  --sy-num: #dfb679;
+  --sy-cmt: #5c6773;
+  --sy-type: #59c2ff;
+  --sy-fn: #ffb454;
+  --sy-builtin: #ffb454;
+  --sy-op: #b3b1ad;
+  --sy-tmpl: #c2d94c;
+  --sy-punc: #b3b1ad;
+}
+
+/* Cobalt2 */
+.theme-cobalt2 {
+  --vscode-bg: #193549;
+  --vscode-sidebar: #122635;
+  --vscode-activity: #1f4662;
+  --vscode-activity-hover: #2a5a7a;
+  --vscode-activity-active: #193549;
+  --vscode-tab: #122635;
+  --vscode-tab-active: #193549;
+  --vscode-border: #1f4662;
+  --vscode-text: #ffffff;
+  --vscode-text-secondary: #7a9cb8;
+  --vscode-line: #1f4662;
+  --vscode-hover: #1f4662;
+  --vscode-selection: #1f4662;
+  --vscode-status: #ffc600;
+  --vscode-status-text: #0a1a2a;
+  --vscode-input: #1f4662;
+  --vscode-button: #ffc600;
+  --vscode-button-hover: #dbaa00;
+  --vscode-accent: #ffc600;
+  --vscode-button-text: #0a1a2a;
+  --sy-kw: #ffc600;
+  --sy-str: #3ad900;
+  --sy-num: #ff628c;
+  --sy-cmt: #7e8a9e;
+  --sy-type: #9effff;
+  --sy-fn: #ffc600;
+  --sy-builtin: #ffc600;
+  --sy-op: #ffffff;
+  --sy-tmpl: #3ad900;
+  --sy-punc: #ffffff;
+}
+
+/* Shades of Purple */
+.theme-shades-of-purple {
+  --vscode-bg: #1e1e3f;
+  --vscode-sidebar: #16163a;
+  --vscode-activity: #252550;
+  --vscode-activity-hover: #2d2d63;
+  --vscode-activity-active: #1e1e3f;
+  --vscode-tab: #16163a;
+  --vscode-tab-active: #1e1e3f;
+  --vscode-border: #2d2d63;
+  --vscode-text: #e6d5f0;
+  --vscode-text-secondary: #8a7bb5;
+  --vscode-line: #2d2d63;
+  --vscode-hover: #252550;
+  --vscode-selection: #3d3d7a;
+  --vscode-status: #a479e3;
+  --vscode-input: #2d2d63;
+  --vscode-button: #a479e3;
+  --vscode-button-hover: #8c62cc;
+  --vscode-accent: #a479e3;
+  --sy-kw: #ff9d00;
+  --sy-str: #a5ff90;
+  --sy-num: #ff628c;
+  --sy-cmt: #6d6b8b;
+  --sy-type: #9effff;
+  --sy-fn: #fad000;
+  --sy-builtin: #fad000;
+  --sy-op: #e6d5f0;
+  --sy-tmpl: #a5ff90;
+  --sy-punc: #e6d5f0;
+}
+
+body {
+  margin: 0;
+  padding: 0;
+  font-family: 'Inter', system-ui, sans-serif;
+  background: var(--vscode-bg, #1e1e1e);
+  color: var(--vscode-text, #cccccc);
+}
+
+/* Custom scrollbar */
+::-webkit-scrollbar { width: 8px; height: 8px; }
+::-webkit-scrollbar-track { background: transparent; }
+::-webkit-scrollbar-thumb { background: #424242; border-radius: 4px; }
+::-webkit-scrollbar-thumb:hover { background: #4f4f4f; }
+
+/* Activity bar icons */
+.activity-icon {
+  @apply w-6 h-6 text-[var(--vscode-text-secondary)] transition-colors duration-150;
+}
+.activity-icon:hover { @apply text-[var(--vscode-text)]; }
+.activity-icon.active { @apply text-[var(--vscode-accent)]; }
+
+/* Status bar items */
+.status-item {
+  @apply px-3 py-0.5 text-xs cursor-pointer transition-colors;
+  color: #858585;
+}
+.status-item:hover { background: rgba(255,255,255,0.08); }
+
+/* VS Code tab style */
+.vscode-tab {
+  @apply flex items-center gap-1.5 px-3 py-1.5 text-xs border-r select-none;
+  background: var(--vscode-tab);
+  color: var(--vscode-text-secondary);
+  border-color: var(--vscode-border);
+}
+.vscode-tab.active {
+  background: var(--vscode-tab-active);
+  color: var(--vscode-text);
+}
+
+/* Button styles */
+.btn-vscode {
+  @apply px-4 py-1.5 text-sm rounded font-medium transition-colors border-0 cursor-pointer;
+  background: var(--vscode-button);
+  color: var(--vscode-button-text, #ffffff);
+}
+.btn-vscode:hover { background: var(--vscode-button-hover); }
+
+/* Syntax highlighting */
+.sy-kw { color: var(--sy-kw); }
+.sy-str { color: var(--sy-str); }
+.sy-num { color: var(--sy-num); }
+.sy-cmt { color: var(--sy-cmt); }
+.sy-type { color: var(--sy-type); }
+.sy-fn { color: var(--sy-fn); }
+.sy-builtin { color: var(--sy-builtin); }
+.sy-op { color: var(--sy-op); }
+.sy-tmpl { color: var(--sy-tmpl); }
+.sy-punc { color: var(--sy-punc); }
+
+/* Animations */
+@keyframes fade-in {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+@keyframes slide-up {
+  from { opacity: 0; transform: translateY(24px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+@keyframes blink {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0; }
+}
+@keyframes float {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-8px); }
+}
+.animate-fade-in {
+  animation: fade-in 0.7s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+.animate-slide-up {
+  animation: slide-up 0.7s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+.animate-blink {
+  animation: blink 1s step-end infinite;
+}
+.animate-float {
+  animation: float 4s ease-in-out infinite;
+}
+.animate-in {
+  opacity: 0;
+  transform: translateY(20px);
+  transition: opacity 0.6s ease-out, transform 0.6s ease-out;
+}
+.animate-in.visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* Input styles */
+.input-vscode {
+  @apply px-3 py-1.5 text-sm rounded border transition-colors outline-none;
+  background: var(--vscode-input);
+  color: var(--vscode-text);
+  border-color: var(--vscode-border);
+}
+.input-vscode:focus { border-color: var(--vscode-accent); }

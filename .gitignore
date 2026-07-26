@@ -1,0 +1,4 @@
+node_modules/
+.next/
+.env.local
+client_secret_*.json
