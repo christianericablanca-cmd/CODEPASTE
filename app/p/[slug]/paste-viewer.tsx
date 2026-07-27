@@ -66,12 +66,13 @@ const { toast } = useToast();
     setDecryptError(false);
     try {
       const hash = window.location.hash.replace('#', '');
-      const key = keyOverride || hash;
+      const sessionKey = sessionStorage.getItem(`paste-key-${paste.slug}`);
+      const key = keyOverride || hash || sessionKey;
       if (key) {
         const plaintext = await decrypt(paste.content, key);
         setDecrypted(plaintext);
       } else {
-        setDecrypted(paste.content);
+        setDecryptError(true);
       }
     } catch {
       setDecryptError(true);

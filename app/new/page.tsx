@@ -169,6 +169,7 @@ export default function NewPaste() {
       });
       const data = await res.json();
       if (res.ok) {
+        sessionStorage.setItem(`paste-key-${data.slug}`, encryptionKey);
         setCreatedUrl(`${data.url}#${encryptionKey}`);
         syncToServer();
       } else {
