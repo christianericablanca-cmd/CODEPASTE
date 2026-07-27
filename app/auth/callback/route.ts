@@ -7,13 +7,23 @@ export async function GET(request: NextRequest) {
   const next = searchParams.get('next') ?? '/new';
 
   if (code) {
+    const response = NextResponse.redirect(`${origin}${next}`);
     const supabase = createServerClient(
       process.env.NEXT_PUBLIC_SUPABASE_URL!,
       process.env.NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY!,
-      { cookies: { getAll: () => request.cookies.getAll(), setAll: () => {} } }
+      {
+        cookies: {
+          getAll: () => request.cookies.getAll(),
+          setAll: (cookiesToSet: { name: string; value: string; options?: Record<string, unknown> }[]) => {
+            cookiesToSet.forEach(({ name, value, options }) =>
+              response.cookies.set(name, value, options)
+            );
+          },
+        },
+      }
     );
     const { error } = await supabase.auth.exchangeCodeForSession(code);
-    if (!error) return NextResponse.redirect(`${origin}${next}`);
+    if (!error) return response;
   }
 
   return NextResponse.redirect(`${origin}/auth/login`);
