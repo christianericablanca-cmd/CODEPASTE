@@ -1,6 +1,8 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { supabase } from '@/lib/supabase';
-import { getUser } from '@/lib/auth';
+
+import { createClient } from '@/lib/supabase-server';
+import { serverEncryptKey } from '@/lib/server-crypto';
 
 export async function GET(request: NextRequest, { params }: { params: { slug: string } }) {
   const { data: paste } = await supabase
@@ -13,8 +15,9 @@ export async function GET(request: NextRequest, { params }: { params: { slug: st
 }
 
 export async function PUT(request: NextRequest, { params }: { params: { slug: string } }) {
-  const user = await getUser(request);
-  if (!user) return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
+  const supabaseServer = await createClient();
+  const { data: { user } } = await supabaseServer.auth.getUser();
+  if (!user) { return NextResponse.json({ error: 'Unauthorized' }, { status: 401 }); }
 
   const { data: existing } = await supabase
     .from('pastes')
@@ -22,8 +25,8 @@ export async function PUT(request: NextRequest, { params }: { params: { slug: st
     .eq('slug', params.slug)
     .single();
 
-  if (!existing) return NextResponse.json({ error: 'Not found' }, { status: 404 });
-  if (existing.user_id !== user.id) return NextResponse.json({ error: 'Forbidden' }, { status: 403 });
+  if (!existing) { return NextResponse.json({ error: 'Not found' }, { status: 404 }); }
+  if (existing.user_id !== user.id) { return NextResponse.json({ error: 'Forbidden' }, { status: 403 }); }
 
   const body = await request.json();
   const updates: Record<string, unknown> = {};
@@ -41,6 +44,10 @@ export async function PUT(request: NextRequest, { params }: { params: { slug: st
     });
   }
 
+  if (body.owner_key) {
+    updates.owner_key_enc = serverEncryptKey(body.owner_key);
+  }
+
   const { data, error } = await supabase
     .from('pastes')
     .update(updates)
@@ -48,12 +55,13 @@ export async function PUT(request: NextRequest, { params }: { params: { slug: st
     .select()
     .single();
 
-  if (error) return NextResponse.json({ error: error.message }, { status: 500 });
+  if (error) { return NextResponse.json({ error: error.message }, { status: 500 }); }
   return NextResponse.json({ paste: data });
 }
 
 export async function DELETE(request: NextRequest, { params }: { params: { slug: string } }) {
-  const user = await getUser(request);
+  const db = await createClient();
+  const { data: { user } } = await db.auth.getUser();
   if (!user) return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
 
   const { data: paste } = await supabase

@@ -2,7 +2,8 @@
 
 import React, { useState } from 'react';
 import { createClient } from '@/lib/supabase-client';
-import { Chrome } from 'lucide-react';
+import { Chrome, ArrowLeft } from 'lucide-react';
+import Link from 'next/link';
 
 export default function SignupPage() {
   const [error, setError] = useState('');
@@ -21,9 +22,12 @@ export default function SignupPage() {
   };
 
   return (
-    <div className="min-h-screen flex items-center justify-center" style={{ background: 'var(--vscode-bg)', color: 'var(--vscode-text)' }}>
-      <div className="w-full max-w-sm p-8 rounded-lg border" style={{ background: 'var(--vscode-sidebar)', borderColor: 'var(--vscode-border)' }}>
-        <h1 className="text-xl font-bold mb-2 text-center" style={{ color: 'var(--vscode-accent)' }}>Create an account</h1>
+    <div className="min-h-screen flex flex-col items-center justify-center p-4" style={{ background: 'var(--vscode-bg)', color: 'var(--vscode-text)' }}>
+      <div className="w-full max-w-sm p-6 sm:p-8 rounded-lg border" style={{ background: 'var(--vscode-sidebar)', borderColor: 'var(--vscode-border)' }}>
+        <Link href="/" className="text-xs flex items-center gap-1 mb-4 hover:opacity-80" style={{ color: 'var(--vscode-text-secondary)' }}>
+          <ArrowLeft size={12} /> Back to CodePaste
+        </Link>
+        <h1 className="text-lg sm:text-xl font-bold mb-2 text-center" style={{ color: 'var(--vscode-accent)' }}>Create an account</h1>
         <p className="text-xs text-center mb-6" style={{ color: 'var(--vscode-text-secondary)' }}>Sign up with Google to get started</p>
         {error && <p className="text-xs mb-4 text-center" style={{ color: '#f48771' }}>{error}</p>}
         <button onClick={handleGoogleSignup} disabled={loading}

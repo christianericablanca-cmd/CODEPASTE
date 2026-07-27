@@ -1,0 +1,13 @@
+<svg width="1200" height="630" viewBox="0 0 1200 630" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <rect width="1200" height="630" fill="#1e1e1e"/>
+  <rect x="540" y="200" width="120" height="120" rx="20" fill="#007acc"/>
+  <text x="600" y="290" text-anchor="middle" fill="#fff" font-size="60" font-weight="700" font-family="monospace">&lt;/&gt;</text>
+  <text x="600" y="370" text-anchor="middle" fill="#007acc" font-size="72" font-weight="700" font-family="system-ui" letter-spacing="-2">CodePaste</text>
+  <text x="600" y="410" text-anchor="middle" fill="#858585" font-size="28" font-family="system-ui">Paste code, share instantly</text>
+  <circle cx="330" cy="480" r="8" fill="#7ecb7e"/>
+  <text x="350" y="485" fill="#858585" font-size="20" font-family="system-ui">End-to-end encrypted</text>
+  <circle cx="535" cy="480" r="8" fill="#7ecb7e"/>
+  <text x="555" y="485" fill="#858585" font-size="20" font-family="system-ui">Monaco Editor</text>
+  <circle cx="755" cy="480" r="8" fill="#7ecb7e"/>
+  <text x="775" y="485" fill="#858585" font-size="20" font-family="system-ui">Google Auth</text>
+</svg>

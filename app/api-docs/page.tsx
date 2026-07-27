@@ -8,18 +8,34 @@ const curl = (code: string) => (
   </pre>
 );
 
+import type { Metadata } from 'next';
+
+export const metadata: Metadata = {
+  title: 'API Docs',
+  description: 'CodePaste API reference — create, list, read, and delete pastes programmatically.',
+  openGraph: {
+    title: 'API Docs - CodePaste',
+    description: 'CodePaste API reference — create, list, read, and delete pastes programmatically.',
+    images: [{ url: '/opengraph-image.svg', width: 1200, height: 630 }],
+  },
+  twitter: {
+    card: 'summary_large_image',
+    images: ['/opengraph-image.svg'],
+  },
+};
+
 export default function ApiDocsPage() {
   return (
     <div className="min-h-screen flex flex-col" style={{ background: 'var(--vscode-bg)', color: 'var(--vscode-text)' }}>
-      <header className="flex items-center gap-4 px-6 py-3 border-b shrink-0" style={{ background: 'var(--vscode-sidebar)', borderColor: 'var(--vscode-border)' }}>
+      <header className="flex items-center gap-3 sm:gap-4 px-3 sm:px-6 py-3 border-b shrink-0" style={{ background: 'var(--vscode-sidebar)', borderColor: 'var(--vscode-border)' }}>
         <Link href="/" className="hover:text-[var(--vscode-text)] transition-colors" style={{ color: 'var(--vscode-text-secondary)' }}>
-          <ArrowLeft size={18} />
+          <ArrowLeft size={16} />
         </Link>
-        <span className="font-bold text-base" style={{ color: 'var(--vscode-accent)' }}>API Documentation</span>
+        <h1 className="font-bold text-sm sm:text-base text-[var(--vscode-accent)]">API Docs</h1>
         <span className="text-xs px-2 py-0.5 rounded" style={{ background: 'var(--vscode-selection)', color: 'var(--vscode-text-secondary)' }}>v1</span>
       </header>
 
-      <main className="flex-1 max-w-3xl mx-auto w-full px-6 py-10 space-y-10">
+      <main className="flex-1 max-w-3xl mx-auto w-full px-4 sm:px-6 py-6 sm:py-10 space-y-8 sm:space-y-10">
         <section>
           <h2 className="text-lg font-bold mb-2">Authentication</h2>
           <p className="text-sm" style={{ color: 'var(--vscode-text-secondary)' }}>

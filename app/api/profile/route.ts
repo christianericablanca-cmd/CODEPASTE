@@ -1,16 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server';
+import { getUser } from '@/lib/auth';
 import { supabase } from '@/lib/supabase';
-import { createServerClient } from '@supabase/ssr';
-
-async function getUser(request: NextRequest) {
-  const supabaseClient = createServerClient(
-    process.env.NEXT_PUBLIC_SUPABASE_URL!,
-    process.env.NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY!,
-    { cookies: { getAll: () => request.cookies.getAll(), setAll: () => {} } }
-  );
-  const { data } = await supabaseClient.auth.getUser();
-  return data.user;
-}
 
 export async function GET(request: NextRequest) {
   const user = await getUser(request);

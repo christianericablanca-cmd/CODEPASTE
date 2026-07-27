@@ -1,4 +1,5 @@
 import { NextRequest } from 'next/server';
+import { createClient } from '@supabase/supabase-js';
 import { createServerClient } from '@supabase/ssr';
 import { supabase } from './supabase';
 import { createHash } from 'node:crypto';
@@ -8,7 +9,16 @@ export async function getUser(request: NextRequest): Promise<User | null> {
   const supabaseClient = createServerClient(
     process.env.NEXT_PUBLIC_SUPABASE_URL!,
     process.env.NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY!,
-    { cookies: { getAll: () => request.cookies.getAll(), setAll: () => {} } }
+    {
+      cookies: {
+        getAll: () => request.cookies.getAll(),
+        setAll: (cookiesToSet: { name: string; value: string }[]) => {
+          cookiesToSet.forEach(({ name, value }) =>
+            request.cookies.set(name, value)
+          );
+        },
+      },
+    }
   );
   const { data: { user } } = await supabaseClient.auth.getUser();
   if (user) return user;
@@ -16,6 +26,13 @@ export async function getUser(request: NextRequest): Promise<User | null> {
   const auth = request.headers.get('Authorization');
   if (auth?.startsWith('Bearer ')) {
     const token = auth.slice(7);
+    const jwtClient = createClient(
+      process.env.NEXT_PUBLIC_SUPABASE_URL!,
+      process.env.NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY!
+    );
+    const { data: { user: jwtUser } } = await jwtClient.auth.getUser(token);
+    if (jwtUser) return jwtUser;
+
     const hash = createHash('sha256').update(token).digest('hex');
     const { data: tokenData } = await supabase
       .from('api_tokens')

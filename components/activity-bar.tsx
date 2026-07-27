@@ -1,12 +1,11 @@
 'use client';
 
-import React, { useState } from 'react';
+import React from 'react';
 import {
   Files,
   Search,
   Settings,
   Palette,
-  Github,
 } from 'lucide-react';
 
 interface ActivityBarProps {

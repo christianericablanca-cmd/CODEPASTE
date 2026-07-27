@@ -2,6 +2,7 @@ import { NextRequest, NextResponse } from 'next/server';
 import { supabase } from '@/lib/supabase';
 import { getUser } from '@/lib/auth';
 import { generateSlug } from '@/lib/slug';
+import { serverEncryptKey } from '@/lib/server-crypto';
 
 export async function GET(request: NextRequest) {
   const { searchParams } = new URL(request.url);
@@ -39,7 +40,7 @@ export async function GET(request: NextRequest) {
 
 export async function POST(request: NextRequest) {
   try {
-    const { content, language, title, visibility, expiresIn, password_protected, wrapped_key, wrapped_key_salt, wrapped_key_iv } = await request.json();
+    const { content, language, title, visibility, expiresIn, password_protected, wrapped_key, wrapped_key_salt, wrapped_key_iv, owner_key } = await request.json();
 
     if (!content || content.trim().length === 0) {
       return NextResponse.json({ error: 'Content is required' }, { status: 400 });
@@ -89,6 +90,9 @@ export async function POST(request: NextRequest) {
       insertData.wrapped_key_salt = wrapped_key_salt;
       insertData.wrapped_key_iv = wrapped_key_iv;
     }
+    if (user && owner_key) {
+      insertData.owner_key_enc = serverEncryptKey(owner_key);
+    }
 
     const { data, error } = await supabase
       .from('pastes')
@@ -97,7 +101,6 @@ export async function POST(request: NextRequest) {
       .single();
 
     if (error) {
-      console.error('Supabase insert error:', error);
       return NextResponse.json({ error: 'Failed to create paste' }, { status: 500 });
     }
 
@@ -105,8 +108,7 @@ export async function POST(request: NextRequest) {
       slug: data.slug,
       url: `${request.nextUrl.origin}/p/${data.slug}`,
     }, { status: 201 });
-  } catch (err) {
-    console.error('Create paste error:', err);
+  } catch {
     return NextResponse.json({ error: 'Internal server error' }, { status: 500 });
   }
 }

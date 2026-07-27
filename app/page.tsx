@@ -162,21 +162,22 @@ export default function LandingPage() {
       />
 
       {/* Nav */}
-      <header className="relative flex items-center justify-between px-6 py-3 border-b shrink-0 z-10"
+      <header className="relative flex items-center justify-between px-3 sm:px-6 py-3 border-b shrink-0 z-10"
         style={{ background: 'var(--vscode-sidebar)', borderColor: 'var(--vscode-border)' }}>
-        <div className="flex items-center gap-8">
-          <span className="font-bold text-lg tracking-tight flex items-center gap-2" style={{ color: 'var(--vscode-accent)' }}>
-            <FileCode size={20} />
-            CodePaste
-          </span>
-          <nav className="flex items-center gap-6 text-sm" style={{ color: 'var(--vscode-text-secondary)' }}>
+        <div className="flex items-center gap-4 sm:gap-8">
+          <Link href="/" className="font-bold text-base sm:text-lg tracking-tight flex items-center gap-2 no-underline" style={{ color: 'var(--vscode-accent)' }}>
+            <FileCode size={18} />
+            <span className="hidden sm:inline">CodePaste</span>
+            <span className="sm:hidden">CP</span>
+          </Link>
+          <nav className="flex items-center gap-4 sm:gap-6 text-sm" style={{ color: 'var(--vscode-text-secondary)' }}>
             <Link href="/new" className="hover:text-[var(--vscode-text)] transition-colors">New Paste</Link>
             <Link href="/api-docs" className="hover:text-[var(--vscode-text)] transition-colors">API</Link>
           </nav>
         </div>
-        <div className="flex items-center gap-4">
+        <div className="flex items-center gap-2 sm:gap-4">
           <AuthStatus />
-          <Link href="/new" className="btn-vscode flex items-center gap-2 text-sm no-underline">
+          <Link href="/new" className="btn-vscode hidden sm:flex items-center gap-2 text-sm no-underline">
             <Sparkles size={14} />
             Create Paste
           </Link>
@@ -184,7 +185,7 @@ export default function LandingPage() {
       </header>
 
       {/* Hero */}
-      <section className="relative flex-1 flex flex-col items-center justify-center px-6 py-24 text-center overflow-hidden">
+      <section className="relative flex-1 flex flex-col items-center justify-center px-4 sm:px-6 py-16 sm:py-24 text-center overflow-hidden">
         {/* Gradient orbs */}
         <div className="absolute top-1/3 left-1/4 w-[500px] h-[500px] rounded-full pointer-events-none opacity-15 blur-3xl animate-float"
           style={{ background: `radial-gradient(circle, var(--vscode-accent) 0%, transparent 70%)` }}
@@ -209,7 +210,7 @@ export default function LandingPage() {
           </div>
 
           {/* Heading */}
-          <h1 className="text-5xl sm:text-7xl font-bold tracking-tight mb-6 leading-[1.1]">
+          <h1 className="text-3xl sm:text-5xl lg:text-7xl font-bold tracking-tight mb-4 sm:mb-6 leading-[1.1]">
             <span className={`inline-block ${heroIn ? 'animate-slide-up' : 'opacity-0'}`}
               style={heroIn ? { animationDelay: '0.2s' } : undefined}>
               Paste code.{' '}
@@ -223,28 +224,28 @@ export default function LandingPage() {
             </span>
           </h1>
 
-          <p className={`text-lg sm:text-xl mb-10 max-w-2xl mx-auto leading-relaxed ${heroIn ? 'animate-slide-up' : 'opacity-0'}`}
+          <p className={`text-sm sm:text-base lg:text-xl mb-8 sm:mb-10 max-w-2xl mx-auto leading-relaxed px-2 ${heroIn ? 'animate-slide-up' : 'opacity-0'}`}
             style={{ color: 'var(--vscode-text-secondary)', ...(heroIn ? { animationDelay: '0.6s' } : {}) }}>
             A private, encrypted pastebin with a full VS Code-style editor.
             TypeScript, JavaScript, Python — paste any code, set a password, and share a link.
           </p>
 
           {/* CTA */}
-          <div className={`flex items-center justify-center gap-4 flex-wrap ${heroIn ? 'animate-slide-up' : 'opacity-0'}`}
+          <div className={`flex flex-col sm:flex-row items-center justify-center gap-3 sm:gap-4 ${heroIn ? 'animate-slide-up' : 'opacity-0'}`}
             style={heroIn ? { animationDelay: '0.8s' } : undefined}>
             <Link href="/new"
-              className="group relative flex items-center gap-2 px-8 py-3.5 text-base rounded-lg font-semibold no-underline overflow-hidden transition-all duration-300 hover:scale-105 hover:shadow-lg"
+              className="group relative flex items-center gap-2 px-6 sm:px-8 py-3 sm:py-3.5 text-sm sm:text-base rounded-lg font-semibold no-underline overflow-hidden transition-all duration-300 hover:scale-105 hover:shadow-lg w-full sm:w-auto justify-center"
               style={{ background: 'var(--vscode-button)', color: 'var(--vscode-button-text, #ffffff)', boxShadow: '0 0 20px rgba(0,122,204,0.15)' }}>
               <span className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-500"
                 style={{ background: 'linear-gradient(90deg, transparent, rgba(255,255,255,0.12), transparent)' }} />
-              <Sparkles size={18} className="relative z-10" />
+              <Sparkles size={16} className="relative z-10" />
               <span className="relative z-10">Create a Paste</span>
-              <ChevronRight size={16} className="relative z-10 group-hover:translate-x-1 transition-transform" />
+              <ChevronRight size={14} className="relative z-10 group-hover:translate-x-1 transition-transform" />
             </Link>
             <a href="#features"
-              className="px-8 py-3.5 text-base rounded-lg border font-medium transition-all duration-300 no-underline hover:scale-105 hover:border-[var(--vscode-accent)]/50"
+              className="px-6 sm:px-8 py-3 sm:py-3.5 text-sm sm:text-base rounded-lg border font-medium transition-all duration-300 no-underline hover:scale-105 hover:border-[var(--vscode-accent)]/50 w-full sm:w-auto text-center"
               style={{ borderColor: 'var(--vscode-border)', color: 'var(--vscode-text-secondary)' }}>
-              <Eye size={16} className="inline mr-1.5 -mt-0.5" />
+              <Eye size={14} className="inline mr-1.5 -mt-0.5" />
               Learn More
             </a>
           </div>
@@ -252,7 +253,7 @@ export default function LandingPage() {
       </section>
 
       {/* Code preview */}
-      <section className="relative px-6 pb-16">
+      <section className="relative px-4 sm:px-6 pb-12 sm:pb-16">
         <div className={`max-w-4xl mx-auto rounded-xl overflow-hidden border ${heroIn ? 'animate-slide-up' : 'opacity-0'}`}
           style={{ borderColor: 'var(--vscode-border)', ...(heroIn ? { animationDelay: '1s' } : {}) }}>
           <div className="flex items-center gap-1.5 px-4 py-2.5 border-b" style={{ background: 'var(--vscode-tab)', borderColor: 'var(--vscode-border)' }}>
@@ -274,10 +275,10 @@ export default function LandingPage() {
       </section>
 
       {/* Features */}
-      <section id="features" className="relative px-6 py-20 border-t" style={{ borderColor: 'var(--vscode-border)' }}>
+      <section id="features" className="relative px-4 sm:px-6 py-14 sm:py-20 border-t" style={{ borderColor: 'var(--vscode-border)' }}>
         <div className="max-w-5xl mx-auto">
-          <h2 className="text-3xl font-bold text-center mb-4">Why CodePaste?</h2>
-          <p className="text-center mb-14 max-w-xl mx-auto" style={{ color: 'var(--vscode-text-secondary)' }}>
+          <h2 className="text-2xl sm:text-3xl font-bold text-center mb-3 sm:mb-4">Why CodePaste?</h2>
+          <p className="text-sm sm:text-base text-center mb-10 sm:mb-14 max-w-xl mx-auto px-2" style={{ color: 'var(--vscode-text-secondary)' }}>
             Everything you need for sharing code, nothing you don&apos;t.
           </p>
           <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-5">
@@ -304,8 +305,8 @@ export default function LandingPage() {
       </section>
 
       {/* Footer */}
-      <footer className="relative px-6 py-6 border-t text-xs" style={{ borderColor: 'var(--vscode-border)', color: 'var(--vscode-text-secondary)' }}>
-        <div className="max-w-5xl mx-auto flex items-center justify-between">
+      <footer className="relative px-4 sm:px-6 py-6 border-t text-xs" style={{ borderColor: 'var(--vscode-border)', color: 'var(--vscode-text-secondary)' }}>
+        <div className="max-w-5xl mx-auto flex flex-col sm:flex-row items-center gap-3 sm:gap-0 sm:justify-between text-center sm:text-left">
           <span>&copy; {new Date().getFullYear()} CodePaste. Built for developers.</span>
           <div className="flex items-center gap-4">
             <Link href="/new" className="hover:text-[var(--vscode-text)] transition-colors">New Paste</Link>

@@ -2,8 +2,6 @@
 @tailwind components;
 @tailwind utilities;
 
-@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap');
-
 /* VS Code Dark+ (Default) */
 .theme-vscode-dark {
   --vscode-bg: #1e1e1e;
@@ -499,7 +497,7 @@
 body {
   margin: 0;
   padding: 0;
-  font-family: 'Inter', system-ui, sans-serif;
+  font-family: var(--font-inter), system-ui, sans-serif;
   background: var(--vscode-bg, #1e1e1e);
   color: var(--vscode-text, #cccccc);
 }

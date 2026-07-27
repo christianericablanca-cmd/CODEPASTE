@@ -6,7 +6,9 @@ import { useTheme } from '@/lib/theme-context';
 import { themes } from '@/lib/themes';
 import { useRouter } from 'next/navigation';
 import Link from 'next/link';
-import { Save, ArrowLeft, Trash2, Key, Plus, X, Copy, Check, Download, ExternalLink } from 'lucide-react';
+import { useNotification, Notification } from '@/components/notification';
+import { ConfirmDialog } from '@/components/confirm-dialog';
+import { Save, ArrowLeft, Trash2, Key, Plus, X, Copy, Check, Download } from 'lucide-react';
 
 interface ApiToken {
   id: string;
@@ -30,6 +32,9 @@ export default function SettingsPage() {
   const [creatingToken, setCreatingToken] = useState(false);
   const [rawToken, setRawToken] = useState('');
   const [copied, setCopied] = useState(false);
+  const [confirmRevoke, setConfirmRevoke] = useState<string | null>(null);
+  const [confirmDeleteAccount, setConfirmDeleteAccount] = useState(false);
+  const { notification, showNotification } = useNotification();
 
   const supabase = createClient();
 
@@ -68,8 +73,8 @@ export default function SettingsPage() {
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ nickname: nickname.trim() || 'dev', preferences }),
     });
-    if (res.ok) setSaved(true);
-    else setError('Failed to save');
+    if (res.ok) { setSaved(true); showNotification('Settings saved', 'success'); }
+    else { setError('Failed to save'); showNotification('Failed to save', 'error'); }
     setSaving(false);
   };
 
@@ -85,32 +90,35 @@ export default function SettingsPage() {
       const { token } = await res.json();
       setRawToken(token.raw_token);
       setNewTokenName('');
+      showNotification('Token created', 'success');
       await fetchTokens();
     } else {
-      alert('Failed to create token');
+      showNotification('Failed to create token', 'error');
     }
     setCreatingToken(false);
   };
 
   const handleRevokeToken = async (id: string) => {
-    if (!confirm('Revoke this token? Any scripts using it will stop working.')) return;
+    setConfirmRevoke(null);
     const res = await fetch(`/api/tokens/${id}`, { method: 'DELETE' });
-    if (res.ok) await fetchTokens();
-    else alert('Failed to revoke');
+    if (res.ok) { showNotification('Token revoked', 'success'); await fetchTokens(); }
+    else showNotification('Failed to revoke', 'error');
   };
 
   if (loading) return null;
 
   return (
     <div className="min-h-screen flex flex-col" style={{ background: 'var(--vscode-bg)', color: 'var(--vscode-text)' }}>
-      <header className="flex items-center gap-4 px-6 py-3 border-b shrink-0" style={{ background: 'var(--vscode-sidebar)', borderColor: 'var(--vscode-border)' }}>
+      <header className="flex items-center gap-3 sm:gap-4 px-3 sm:px-6 py-3 border-b shrink-0" style={{ background: 'var(--vscode-sidebar)', borderColor: 'var(--vscode-border)' }}>
         <Link href="/my-pastes" className="hover:text-[var(--vscode-text)] transition-colors" style={{ color: 'var(--vscode-text-secondary)' }}>
-          <ArrowLeft size={18} />
+          <ArrowLeft size={16} />
         </Link>
-        <span className="font-bold text-base" style={{ color: 'var(--vscode-accent)' }}>Settings</span>
+        <h1 className="font-bold text-sm sm:text-base text-[var(--vscode-accent)]">Settings</h1>
       </header>
 
-      <main className="flex-1 max-w-lg mx-auto w-full px-6 py-10 space-y-8">
+      {notification && <Notification notification={notification} />}
+
+      <main className="flex-1 max-w-lg mx-auto w-full px-4 sm:px-6 py-6 sm:py-10 space-y-6 sm:space-y-8">
         <section>
           <h2 className="text-sm font-semibold mb-3 uppercase tracking-wider" style={{ color: 'var(--vscode-text-secondary)' }}>Profile</h2>
           <div className="space-y-3">
@@ -177,7 +185,7 @@ export default function SettingsPage() {
               <p className="text-xs font-semibold mb-1" style={{ color: 'var(--vscode-accent)' }}>Token created — copy it now, you won&apos;t see it again!</p>
               <div className="flex items-center gap-2">
                 <code className="flex-1 text-xs p-2 rounded break-all" style={{ background: 'var(--vscode-input)', color: 'var(--vscode-text)' }}>{rawToken}</code>
-                <button onClick={() => { navigator.clipboard.writeText(rawToken); setCopied(true); setTimeout(() => setCopied(false), 2000); }}
+                <button onClick={() => { navigator.clipboard.writeText(rawToken); setCopied(true); setTimeout(() => setCopied(false), 2000); showNotification('Token copied', 'success'); }}
                   className="btn-vscode text-xs flex items-center gap-1">
                   {copied ? <Check size={12} /> : <Copy size={12} />}
                 </button>
@@ -205,7 +213,7 @@ export default function SettingsPage() {
                 <span style={{ color: 'var(--vscode-text-secondary)' }}>
                   {t.last_used_at ? `Used ${new Date(t.last_used_at).toLocaleDateString()}` : 'Never used'}
                 </span>
-                <button onClick={() => handleRevokeToken(t.id)}
+                <button onClick={() => setConfirmRevoke(t.id)}
                   className="hover:text-[#f48771] transition-colors"><X size={14} /></button>
               </div>
             ))}
@@ -233,25 +241,43 @@ export default function SettingsPage() {
           <p className="text-xs mb-4" style={{ color: 'var(--vscode-text-secondary)' }}>
             Delete your account and all your pastes permanently. This cannot be undone.
           </p>
-          <button onClick={async () => {
-            if (!confirm('Are you sure? This will delete ALL your pastes and your account.')) return;
-            if (!confirm('Really? This is permanent. All your pastes will be gone.')) return;
-            try {
-              const res = await fetch('/api/profile', { method: 'DELETE' });
-              if (res.ok) {
-                await supabase.auth.signOut();
-                router.push('/');
-              } else {
-                alert('Failed to delete account');
-              }
-            } catch { alert('Network error'); }
-          }}
+          <button onClick={() => setConfirmDeleteAccount(true)}
             className="flex items-center gap-2 px-4 py-2 text-sm rounded border transition-colors cursor-pointer"
             style={{ borderColor: '#f48771', color: '#f48771' }}>
             <Trash2 size={14} /> Delete Account
           </button>
         </section>
       </main>
+
+      <ConfirmDialog
+        open={confirmRevoke !== null}
+        title="Revoke token"
+        message="Revoke this token? Any scripts or applications using it will immediately stop working."
+        confirmLabel="Revoke"
+        onConfirm={() => handleRevokeToken(confirmRevoke!)}
+        onCancel={() => setConfirmRevoke(null)}
+      />
+
+      <ConfirmDialog
+        open={confirmDeleteAccount}
+        title="Delete account"
+        message="This will permanently delete your account and ALL your pastes. This action cannot be undone. Are you sure?"
+        confirmLabel="Delete everything"
+        onConfirm={async () => {
+          setConfirmDeleteAccount(false);
+          try {
+            const res = await fetch('/api/profile', { method: 'DELETE' });
+            if (res.ok) {
+              showNotification('Account deleted', 'success');
+              await supabase.auth.signOut();
+              router.push('/');
+            } else {
+              showNotification('Failed to delete account', 'error');
+            }
+          } catch { showNotification('Network error', 'error'); }
+        }}
+        onCancel={() => setConfirmDeleteAccount(false)}
+      />
     </div>
   );
 }
