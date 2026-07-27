@@ -334,6 +334,7 @@ const { toast } = useToast();
               </div>
             ) : editing ? (
               <MonacoEditor
+                key="editor-edit"
                 beforeMount={(monaco) => { registerMonacoThemes(monaco); }}
                 height="100%"
                 language={editLang}
@@ -355,6 +356,7 @@ const { toast } = useToast();
               />
             ) : (
               <MonacoEditor
+                key="editor-view"
                 beforeMount={(monaco) => { registerMonacoThemes(monaco); }}
                 height="100%"
                 language={paste.language}
@@ -373,13 +375,10 @@ const { toast } = useToast();
                   padding: { top: 16, bottom: 16 },
                   automaticLayout: true,
                   tabSize: 2,
-
                   contextmenu: false,
                   quickSuggestions: false,
                   suggestOnTriggerCharacters: false,
                   parameterHints: { enabled: false },
-
-                  
                 }}
               />
             )}
