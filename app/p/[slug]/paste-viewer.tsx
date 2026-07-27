@@ -6,6 +6,7 @@ import { StatusBar } from '@/components/status-bar';
 import { ThemePanel } from '@/components/theme-panel';
 import { FileCode, Copy, Check, Clock, Eye, Shield, Loader2, Trash2, Edit3, GitFork, Lock, Save, X, History } from 'lucide-react';
 import { decrypt, unwrapE2EEKey, generateKey, encrypt } from '@/lib/crypto';
+import { createClient } from '@/lib/supabase-client';
 import { useRouter } from 'next/navigation';
 import { useToast } from '@/components/toast';
 import { languages, themes } from '@/lib/themes';
@@ -31,7 +32,7 @@ interface PasteData {
   wrapped_key_iv?: string;
 }
 
-export function PasteViewer({ paste, isOwner }: { paste: PasteData; isOwner: boolean }) {
+export function PasteViewer({ paste, isOwner: serverIsOwner }: { paste: PasteData; isOwner: boolean }) {
   const [decrypted, setDecrypted] = useState<string | null>(null);
   const [decrypting, setDecrypting] = useState(paste.password_protected ? false : true);
   const [decryptError, setDecryptError] = useState(false);
@@ -51,6 +52,7 @@ export function PasteViewer({ paste, isOwner }: { paste: PasteData; isOwner: boo
   const [editLang, setEditLang] = useState(paste.language);
   const [editVis, setEditVis] = useState(paste.visibility);
   const [saving, setSaving] = useState(false);
+  const [isOwner, setIsOwner] = useState(serverIsOwner);
   const router = useRouter();
 const { toast } = useToast();
   const { theme } = useTheme();
@@ -60,6 +62,15 @@ const { toast } = useToast();
       doDecrypt('');
     }
   }, [paste.content]);
+
+  useEffect(() => {
+    if (serverIsOwner) { setIsOwner(true); return; }
+    (async () => {
+      const supabase = createClient();
+      const { data: { user } } = await supabase.auth.getUser();
+      if (user && user.id === paste.user_id) setIsOwner(true);
+    })();
+  }, [serverIsOwner, paste.user_id]);
 
   const doDecrypt = async (keyOverride?: string) => {
     setDecrypting(true);
