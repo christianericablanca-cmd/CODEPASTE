@@ -13,9 +13,12 @@ export default function SignupPage() {
     setLoading(true);
     setError('');
     const supabase = createClient();
+    const redirectTo = process.env.NEXT_PUBLIC_SITE_URL
+      ? `${process.env.NEXT_PUBLIC_SITE_URL}/auth/callback`
+      : `${location.origin}/auth/callback`;
     const { error } = await supabase.auth.signInWithOAuth({
       provider: 'google',
-      options: { redirectTo: `${location.origin}/auth/callback` },
+      options: { redirectTo },
     });
     if (error) setError(error.message);
     setLoading(false);
