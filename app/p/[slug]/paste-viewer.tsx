@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useState, useEffect, useRef, useCallback } from 'react';
 import { ActivityBar } from '@/components/activity-bar';
 import { StatusBar } from '@/components/status-bar';
 import { ThemePanel } from '@/components/theme-panel';
@@ -443,32 +443,9 @@ export function PasteViewer({ paste, isOwner: serverIsOwner, ownerKey: serverOwn
                 }}
               />
             ) : (
-              <MonacoEditor
-                key="editor-view"
-                beforeMount={(monaco) => { registerMonacoThemes(monaco); }}
-                height="100%"
-                language={paste.language}
-                value={displayContent}
-                theme={theme.monacoTheme}
-                options={{
-                  fontSize: 14,
-                  fontFamily: "'JetBrains Mono', 'Fira Code', monospace",
-                  fontLigatures: true,
-                  wordWrap: 'on',
-                  minimap: { enabled: false },
-                  readOnly: true,
-                  domReadOnly: true,
-                  scrollBeyondLastLine: false,
-                  lineNumbers: 'on',
-                  padding: { top: 16, bottom: 16 },
-                  automaticLayout: true,
-                  tabSize: 2,
-                  contextmenu: false,
-                  quickSuggestions: false,
-                  suggestOnTriggerCharacters: false,
-                  parameterHints: { enabled: false },
-                }}
-              />
+              <div className="h-full w-full" style={{ background: 'var(--vscode-bg)' }}>
+                <pre className="h-full w-full overflow-auto font-mono text-sm leading-relaxed p-4 m-0" style={{ color: 'var(--vscode-text)', background: 'transparent' }}>{displayContent}</pre>
+              </div>
             )}
           </div>
         </div>

@@ -196,118 +196,114 @@ export default function NewPaste() {
     <div className="h-dvh flex flex-col" style={{ background: 'var(--vscode-bg)', color: 'var(--vscode-text)' }}>
       <h1 className="sr-only">New Paste</h1>
       {/* Top info bar */}
-      <div className="flex items-center gap-1 sm:gap-3 px-2 sm:px-4 py-1.5 sm:py-2 border-b shrink-0 overflow-x-auto" style={{ background: 'var(--vscode-sidebar)', borderColor: 'var(--vscode-border)' }}>
-        <Link href="/" className="font-bold text-sm sm:text-base tracking-tight shrink-0 no-underline" style={{ color: 'var(--vscode-accent)' }}>CodePaste</Link>
-        <input
-          type="text"
-          value={activeTab.title}
-          onChange={(e) => updateTab(activeTab.id, { title: e.target.value })}
-          placeholder="Paste title..."
-          className="input-vscode max-w-[100px] sm:max-w-[180px] text-xs sm:text-sm"
-        />
-        {/* Language selector */}
-        <div className="relative">
-          <button
-            onClick={() => setShowLangDropdown(!showLangDropdown)}
-            className="flex items-center gap-2 px-2.5 py-1.5 text-sm rounded border transition-colors"
-            style={{ background: 'var(--vscode-input)', color: 'var(--vscode-text)', borderColor: 'var(--vscode-border)' }}
-          >
-            <FileCode size={14} />
-            {selectedLang.name}
-            <ChevronDown size={12} />
-          </button>
-          {showLangDropdown && (
-            <>
-              <div className="fixed inset-0 z-10" onClick={() => setShowLangDropdown(false)} />
-              <div className="absolute left-0 top-full mt-1 z-20 w-44 max-h-64 overflow-y-auto rounded border shadow-lg" style={{ background: 'var(--vscode-sidebar)', borderColor: 'var(--vscode-border)' }}>
+      <div className="px-2 sm:px-4 py-1.5 sm:py-2 border-b shrink-0" style={{ background: 'var(--vscode-sidebar)', borderColor: 'var(--vscode-border)' }}>
+        <div className="flex items-center gap-1 sm:gap-3 overflow-x-auto">
+          <Link href="/" className="font-bold text-sm sm:text-base tracking-tight shrink-0 no-underline" style={{ color: 'var(--vscode-accent)' }}>CodePaste</Link>
+          <input
+            type="text"
+            value={activeTab.title}
+            onChange={(e) => updateTab(activeTab.id, { title: e.target.value })}
+            placeholder="Paste title..."
+            className="input-vscode max-w-[100px] sm:max-w-[180px] text-xs sm:text-sm"
+          />
+          {/* Language selector */}
+          <div className="relative shrink-0">
+            <button
+              onClick={() => setShowLangDropdown(!showLangDropdown)}
+              className="flex items-center gap-2 px-2.5 py-1.5 text-sm rounded border transition-colors"
+              style={{ background: 'var(--vscode-input)', color: 'var(--vscode-text)', borderColor: 'var(--vscode-border)' }}
+            >
+              <FileCode size={14} />
+              {selectedLang.name}
+              <ChevronDown size={12} />
+            </button>
+            {showLangDropdown && (
+              <div className="fixed left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 z-50 w-64 max-h-72 overflow-y-auto rounded border shadow-xl" style={{ background: 'var(--vscode-sidebar)', borderColor: 'var(--vscode-border)' }}>
+                <div className="sticky top-0 px-3 py-2 text-xs font-semibold border-b" style={{ background: 'var(--vscode-sidebar)', borderColor: 'var(--vscode-border)', color: 'var(--vscode-text-secondary)' }}>Language</div>
                 {languages.map((l) => (
                   <button key={l.id} onClick={() => { updateTab(activeTab.id, { language: l.id }); setShowLangDropdown(false); }}
-                    className="w-full text-left px-3 py-1.5 text-sm transition-colors"
+                    className="w-full text-left px-3 py-2 text-sm transition-colors"
                     style={{ color: activeTab.language === l.id ? 'var(--vscode-accent)' : 'var(--vscode-text)', background: activeTab.language === l.id ? 'var(--vscode-selection)' : 'transparent' }}
                     onMouseEnter={(e) => e.currentTarget.style.background = 'var(--vscode-hover)'}
                     onMouseLeave={(e) => { if (activeTab.language !== l.id) e.currentTarget.style.background = 'transparent'; }}
                   >{l.name}</button>
                 ))}
               </div>
-            </>
-          )}
-        </div>
-        <div className="flex-1 min-w-0" />
-        <AuthStatus />
-        <div className="flex items-center gap-1 sm:gap-2 shrink-0">
-          {signedIn && (
-            <Link href="/my-pastes" className="hidden sm:inline-flex text-xs px-2 py-1 rounded border no-underline transition-colors" style={{ borderColor: 'var(--vscode-border)', color: 'var(--vscode-text-secondary)' }}>
-              My Pastes
-            </Link>
-          )}
-          {/* Visibility */}
-          <div className="relative">
-            <button
-              onClick={() => setShowVisibilityDropdown(!showVisibilityDropdown)}
-              className="flex items-center gap-1 sm:gap-1.5 px-1.5 sm:px-2.5 py-1 sm:py-1.5 text-[10px] sm:text-xs rounded border transition-colors"
-              style={{ borderColor: 'var(--vscode-border)', color: 'var(--vscode-text-secondary)' }}
-            >
-              <Lock size={10} /> <span className="hidden sm:inline">{visibility.charAt(0).toUpperCase() + visibility.slice(1)}</span><span className="sm:hidden">{visibility.charAt(0).toUpperCase()}</span>
-            </button>
-            {showVisibilityDropdown && (
-              <>
-                <div className="fixed inset-0 z-10" onClick={() => setShowVisibilityDropdown(false)} />
-                <div className="absolute right-0 top-full mt-1 z-20 w-36 rounded border shadow-lg" style={{ background: 'var(--vscode-sidebar)', borderColor: 'var(--vscode-border)' }}>
+            )}
+          </div>
+          <div className="flex-1 min-w-0" />
+          <AuthStatus />
+          <div className="flex items-center gap-1 sm:gap-2 shrink-0">
+            {signedIn && (
+              <Link href="/my-pastes" className="hidden sm:inline-flex text-xs px-2 py-1 rounded border no-underline transition-colors whitespace-nowrap" style={{ borderColor: 'var(--vscode-border)', color: 'var(--vscode-text-secondary)' }}>
+                My Pastes
+              </Link>
+            )}
+            {/* Visibility */}
+            <div className="relative">
+              <button
+                onClick={() => setShowVisibilityDropdown(!showVisibilityDropdown)}
+                className="flex items-center gap-1 sm:gap-1.5 px-1.5 sm:px-2.5 py-1 sm:py-1.5 text-[10px] sm:text-xs rounded border transition-colors"
+                style={{ borderColor: 'var(--vscode-border)', color: 'var(--vscode-text-secondary)' }}
+              >
+                <Lock size={10} /> <span className="hidden sm:inline">{visibility.charAt(0).toUpperCase() + visibility.slice(1)}</span><span className="sm:hidden">{visibility.charAt(0).toUpperCase()}</span>
+              </button>
+              {showVisibilityDropdown && (
+                <div className="fixed right-4 top-auto z-50 mt-1 w-40 rounded border shadow-xl" style={{ background: 'var(--vscode-sidebar)', borderColor: 'var(--vscode-border)' }}>
+                  <div className="px-3 py-2 text-xs font-semibold border-b" style={{ borderColor: 'var(--vscode-border)', color: 'var(--vscode-text-secondary)' }}>Visibility</div>
                   {visibilityOptions.map((o) => (
                     <button key={o.id} onClick={() => { setVisibility(o.id); setShowVisibilityDropdown(false); }}
-                      className="w-full text-left px-3 py-1.5 text-xs transition-colors"
+                      className="w-full text-left px-3 py-2 text-xs transition-colors"
                       style={{ color: visibility === o.id ? 'var(--vscode-accent)' : 'var(--vscode-text)' }}
                       onMouseEnter={(e) => e.currentTarget.style.background = 'var(--vscode-hover)'}
                       onMouseLeave={(e) => e.currentTarget.style.background = 'transparent'}
                     >{o.label}</button>
                   ))}
                 </div>
-              </>
-            )}
-          </div>
-          {/* Expiry */}
-          <div className="relative hidden sm:block">
-            <button
-              onClick={() => setShowExpiryDropdown(!showExpiryDropdown)}
-              className="flex items-center gap-1.5 px-2.5 py-1.5 text-xs rounded border transition-colors"
-              style={{ borderColor: 'var(--vscode-border)', color: 'var(--vscode-text-secondary)' }}
-            >
-              <Clock size={12} /> {expiryOptions.find(o => o.id === expiry)?.label || 'Never'}
-            </button>
-            {showExpiryDropdown && (
-              <>
-                <div className="fixed inset-0 z-10" onClick={() => setShowExpiryDropdown(false)} />
-                <div className="absolute right-0 top-full mt-1 z-20 w-36 rounded border shadow-lg" style={{ background: 'var(--vscode-sidebar)', borderColor: 'var(--vscode-border)' }}>
+              )}
+            </div>
+            {/* Expiry */}
+            <div className="relative hidden sm:block">
+              <button
+                onClick={() => setShowExpiryDropdown(!showExpiryDropdown)}
+                className="flex items-center gap-1.5 px-2.5 py-1.5 text-xs rounded border transition-colors"
+                style={{ borderColor: 'var(--vscode-border)', color: 'var(--vscode-text-secondary)' }}
+              >
+                <Clock size={12} /> {expiryOptions.find(o => o.id === expiry)?.label || 'Never'}
+              </button>
+              {showExpiryDropdown && (
+                <div className="fixed right-4 top-auto z-50 mt-1 w-40 rounded border shadow-xl" style={{ background: 'var(--vscode-sidebar)', borderColor: 'var(--vscode-border)' }}>
+                  <div className="px-3 py-2 text-xs font-semibold border-b" style={{ borderColor: 'var(--vscode-border)', color: 'var(--vscode-text-secondary)' }}>Expiry</div>
                   {expiryOptions.map((o) => (
                     <button key={o.id} onClick={() => { setExpiry(o.id); setShowExpiryDropdown(false); }}
-                      className="w-full text-left px-3 py-1.5 text-xs transition-colors"
+                      className="w-full text-left px-3 py-2 text-xs transition-colors"
                       style={{ color: expiry === o.id ? 'var(--vscode-accent)' : 'var(--vscode-text)' }}
                       onMouseEnter={(e) => e.currentTarget.style.background = 'var(--vscode-hover)'}
                       onMouseLeave={(e) => e.currentTarget.style.background = 'transparent'}
                     >{o.label}</button>
                   ))}
                 </div>
-              </>
-            )}
+              )}
+            </div>
+            {/* Password toggle */}
+            <button
+              onClick={() => setShowPasswordField(!showPasswordField)}
+              className="flex items-center gap-1 sm:gap-1.5 px-1.5 sm:px-2.5 py-1 sm:py-1.5 text-[10px] sm:text-xs rounded border transition-colors whitespace-nowrap"
+              style={{ borderColor: showPasswordField ? 'var(--vscode-accent)' : 'var(--vscode-border)', color: showPasswordField ? 'var(--vscode-accent)' : 'var(--vscode-text-secondary)' }}
+            >
+              <Lock size={10} /> <span className="hidden sm:inline">{showPasswordField ? 'Password Set' : 'Password'}</span>
+            </button>
+            {/* Create button */}
+            <button
+              onClick={handlePaste}
+              disabled={creating || !activeTab.code.trim()}
+              className="btn-vscode flex items-center gap-1 sm:gap-2 text-[11px] sm:text-sm disabled:opacity-50 px-2 sm:px-3 py-1 sm:py-1.5 whitespace-nowrap"
+            >
+              {creating ? <Loader2 size={12} className="animate-spin" /> : <Globe size={12} />}
+              <span className="hidden sm:inline">{creating ? 'Creating...' : 'Create Paste'}</span>
+              <span className="sm:hidden">{creating ? '...' : 'Create'}</span>
+            </button>
           </div>
-          {/* Password toggle */}
-          <button
-            onClick={() => setShowPasswordField(!showPasswordField)}
-            className="flex items-center gap-1 sm:gap-1.5 px-1.5 sm:px-2.5 py-1 sm:py-1.5 text-[10px] sm:text-xs rounded border transition-colors"
-            style={{ borderColor: showPasswordField ? 'var(--vscode-accent)' : 'var(--vscode-border)', color: showPasswordField ? 'var(--vscode-accent)' : 'var(--vscode-text-secondary)' }}
-          >
-            <Lock size={10} /> <span className="hidden sm:inline">{showPasswordField ? 'Password Set' : 'Password'}</span>
-          </button>
-          {/* Create button */}
-          <button
-            onClick={handlePaste}
-            disabled={creating || !activeTab.code.trim()}
-            className="btn-vscode flex items-center gap-1 sm:gap-2 text-[11px] sm:text-sm disabled:opacity-50 px-2 sm:px-3 py-1 sm:py-1.5"
-          >
-            {creating ? <Loader2 size={12} className="animate-spin" /> : <Globe size={12} />}
-            <span className="hidden sm:inline">{creating ? 'Creating...' : 'Create Paste'}</span>
-            <span className="sm:hidden">{creating ? '...' : 'Create'}</span>
-          </button>
         </div>
       </div>
 

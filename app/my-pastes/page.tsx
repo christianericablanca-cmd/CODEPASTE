@@ -1,39 +1,62 @@
-import React from 'react';
+'use client';
+
+import React, { useEffect, useState } from 'react';
 import { supabase } from '@/lib/supabase';
 import { createClient } from '@/lib/supabase-server';
+import { createClient as createBrowserClient } from '@/lib/supabase-client';
 import Link from 'next/link';
-import { redirect } from 'next/navigation';
+import { useRouter } from 'next/navigation';
 import { Clock, Eye, FileCode, Globe, Lock, Shield } from 'lucide-react';
 
-import type { Metadata } from 'next';
+export default function MyPastesPage() {
+  const router = useRouter();
+  const [pastes, setPastes] = useState<any[] | null>(null);
+  const [nickname, setNickname] = useState('');
+  const [loading, setLoading] = useState(true);
+  const [notAuthed, setNotAuthed] = useState(false);
 
-export const dynamic = 'force-dynamic';
+  useEffect(() => {
+    loadPastes();
+    const onShow = (e: PageTransitionEvent) => { if (e.persisted) loadPastes(); };
+    window.addEventListener('pageshow', onShow);
+    return () => window.removeEventListener('pageshow', onShow);
+  }, []);
 
-export const metadata: Metadata = {
-  title: 'My Pastes',
-  description: 'View and manage your code pastes on CodePaste.',
-  robots: { index: false, follow: false },
-};
+  async function loadPastes() {
+    setLoading(true);
+    try {
+      const supabaseServer = await createClient();
+      const { data: { user } } = await supabaseServer.auth.getUser();
+      if (!user) { setNotAuthed(true); setLoading(false); return; }
 
-export default async function MyPastesPage() {
-  const supabaseServer = await createClient();
-  const { data: { user } } = await supabaseServer.auth.getUser();
-  if (!user) redirect('/auth/login');
+      const { data: p } = await supabase
+        .from('pastes')
+        .select('slug, title, language, visibility, created_at, views')
+        .eq('user_id', user.id)
+        .order('created_at', { ascending: false })
+        .limit(50);
 
-  const { data: pastes } = await supabase
-    .from('pastes')
-    .select('slug, title, language, visibility, created_at, views')
-    .eq('user_id', user.id)
-    .order('created_at', { ascending: false })
-    .limit(50);
+      const profile = await supabase
+        .from('profiles')
+        .select('nickname')
+        .eq('id', user.id)
+        .maybeSingle();
 
-  const profile = await supabase
-    .from('profiles')
-    .select('nickname')
-    .eq('id', user.id)
-    .maybeSingle();
+      const n = profile?.data?.nickname || user.user_metadata?.full_name || user.email?.split('@')[0];
+      setPastes(p || []);
+      setNickname(n);
+    } catch (e) {
+      console.error(e);
+      setPastes([]);
+    } finally {
+      setLoading(false);
+    }
+  }
 
-  const nickname = profile?.data?.nickname || user.user_metadata?.full_name || user.email?.split('@')[0];
+  if (notAuthed) {
+    if (typeof window !== 'undefined') window.location.href = '/auth/login';
+    return null;
+  }
 
   return (
     <div className="min-h-screen flex flex-col" style={{ background: 'var(--vscode-bg)', color: 'var(--vscode-text)' }}>
@@ -54,11 +77,15 @@ export default async function MyPastesPage() {
         <div className="flex items-center justify-between mb-4 sm:mb-6">
           <div>
             <h1 className="text-xl sm:text-2xl font-bold">{nickname}&apos;s Pastes</h1>
-            <p className="text-xs sm:text-sm mt-1" style={{ color: 'var(--vscode-text-secondary)' }}>{pastes?.length || 0} paste{(pastes?.length || 0) !== 1 ? 's' : ''}</p>
+            <p className="text-xs sm:text-sm mt-1" style={{ color: 'var(--vscode-text-secondary)' }}>{loading ? '...' : (pastes?.length || 0) + ' paste' + ((pastes?.length || 0) !== 1 ? 's' : '')}</p>
           </div>
         </div>
 
-        {!pastes || pastes.length === 0 ? (
+        {loading ? (
+          <div className="text-center py-16">
+            <p className="text-sm" style={{ color: 'var(--vscode-text-secondary)' }}>Loading...</p>
+          </div>
+        ) : !pastes || pastes.length === 0 ? (
           <div className="text-center py-16">
             <p className="text-sm" style={{ color: 'var(--vscode-text-secondary)' }}>No pastes yet.</p>
             <Link href="/new" className="btn-vscode inline-flex items-center gap-2 mt-4 text-sm no-underline">
@@ -67,7 +94,7 @@ export default async function MyPastesPage() {
           </div>
         ) : (
           <div className="space-y-2">
-            {pastes.map((p: { slug: string; title: string; language: string; visibility: string; created_at: string; views: number }) => (
+            {pastes.map((p: any) => (
               <Link key={p.slug} href={`/p/${p.slug}`}
                 className="flex items-center gap-2 sm:gap-4 px-3 sm:px-4 py-2 sm:py-3 rounded border transition-colors no-underline"
                 style={{ borderColor: 'var(--vscode-border)', color: 'var(--vscode-text)' }}>
