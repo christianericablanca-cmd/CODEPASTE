@@ -48,11 +48,6 @@ export default function MyPastesPage() {
     }
   }
 
-  if (notAuthed) {
-    if (typeof window !== 'undefined') window.location.href = '/auth/login';
-    return null;
-  }
-
   return (
     <div className="min-h-screen flex flex-col" style={{ background: 'var(--vscode-bg)', color: 'var(--vscode-text)' }}>
       <header className="flex items-center justify-between px-3 sm:px-6 py-3 border-b shrink-0" style={{ background: 'var(--vscode-sidebar)', borderColor: 'var(--vscode-border)' }}>
