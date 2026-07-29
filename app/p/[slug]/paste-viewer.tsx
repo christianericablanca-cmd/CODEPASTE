@@ -55,7 +55,6 @@ export function PasteViewer({ paste, isOwner: serverIsOwner, ownerKey: serverOwn
   const [editVis, setEditVis] = useState(paste.visibility);
   const [saving, setSaving] = useState(false);
   const [isOwner, setIsOwner] = useState(serverIsOwner);
-  const [monacoReady, setMonacoReady] = useState(false);
   const [createdDate, setCreatedDate] = useState('');
   const [confirmDelete, setConfirmDelete] = useState(false);
   const { notification, showNotification } = useNotification();
@@ -459,36 +458,7 @@ export function PasteViewer({ paste, isOwner: serverIsOwner, ownerKey: serverOwn
                 }}
               />
             ) : (
-              <div className="relative h-full w-full">
-                <pre className="h-full w-full overflow-auto font-mono text-sm leading-relaxed p-4 m-0" style={{ color: 'var(--vscode-text)', background: 'transparent', display: monacoReady ? 'none' : undefined }}>{displayContent}</pre>
-                <MonacoEditor
-                  key="editor-view"
-                  beforeMount={(monaco) => { registerMonacoThemes(monaco); }}
-                  onMount={() => { setMonacoReady(true); }}
-                  height="100%"
-                  language={paste.language}
-                  value={displayContent}
-                  theme={theme.monacoTheme}
-                  options={{
-                    fontSize: 14,
-                    fontFamily: "'JetBrains Mono', 'Fira Code', monospace",
-                    fontLigatures: true,
-                    wordWrap: 'on',
-                    minimap: { enabled: false },
-                    readOnly: true,
-                    domReadOnly: true,
-                    scrollBeyondLastLine: false,
-                    lineNumbers: 'on',
-                    padding: { top: 16, bottom: 16 },
-                    automaticLayout: true,
-                    tabSize: 2,
-                    contextmenu: false,
-                    quickSuggestions: false,
-                    suggestOnTriggerCharacters: false,
-                    parameterHints: { enabled: false },
-                  }}
-                />
-              </div>
+              <pre className="h-full w-full overflow-auto font-mono text-sm leading-relaxed p-4 m-0" style={{ color: 'var(--vscode-text)', background: 'transparent' }}>{displayContent}</pre>
             )}
           </div>
         </div>
