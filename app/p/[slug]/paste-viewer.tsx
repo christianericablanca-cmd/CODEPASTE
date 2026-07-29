@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useState, useEffect, useRef, useCallback } from 'react';
 import { ActivityBar } from '@/components/activity-bar';
 import { StatusBar } from '@/components/status-bar';
 import { ThemePanel } from '@/components/theme-panel';
@@ -63,12 +63,6 @@ export function PasteViewer({ paste, isOwner: serverIsOwner, ownerKey: serverOwn
   if (!supabaseRef.current) supabaseRef.current = createClient();
 
   useEffect(() => {
-    if (!paste.password_protected) {
-      doDecrypt();
-    }
-  }, [paste.content]);
-
-  useEffect(() => {
     if (serverIsOwner) { setIsOwner(true); return; }
     let cancelled = false;
     (async () => {
@@ -79,7 +73,8 @@ export function PasteViewer({ paste, isOwner: serverIsOwner, ownerKey: serverOwn
     return () => { cancelled = true; };
   }, [serverIsOwner, paste.user_id]);
 
-  const doDecrypt = async (keyOverride?: string) => {
+  const doDecrypt = useCallback(async (keyOverride?: string) => {
+    if (!paste.content && !keyOverride) return;
     setDecrypting(true);
     setDecryptError(false);
     try {
@@ -88,32 +83,42 @@ export function PasteViewer({ paste, isOwner: serverIsOwner, ownerKey: serverOwn
         try { key = localStorage.getItem(`ck_${paste.slug}`) || ''; } catch {}
       }
       if (!key) {
-        const hash = window.location.hash.replace('#', '');
-        key = hash;
+        key = window.location.hash.replace('#', '');
       }
       if (!key) {
         try {
           await supabaseRef.current!.auth.getUser();
           const res = await fetch(`/api/pastes/${paste.slug}/key`);
-          if (res.ok) {
-            const data = await res.json();
-            key = data.key;
-          }
+          if (res.ok) { const data = await res.json(); key = data.key; }
         } catch {}
       }
-      if (key) {
+      if (key && paste.content) {
         const plaintext = await decrypt(paste.content, key);
         setDecrypted(plaintext);
         try { localStorage.removeItem(`ck_${paste.slug}`); } catch {}
-      } else {
-        setDecryptError(true);
+        return;
       }
-    } catch {
-      setDecryptError(true);
-    } finally {
-      setDecrypting(false);
+    } catch {}
+    if (!paste.content) { setDecrypting(false); return; }
+    setDecryptError(true);
+    setDecrypting(false);
+  }, [paste.slug, paste.content, serverOwnerKey]);
+
+  const retryDecrypt = useRef<() => void>(() => {});
+  retryDecrypt.current = () => { if (!decrypted) doDecrypt(); };
+
+  useEffect(() => {
+    if (!paste.password_protected && paste.content) {
+      doDecrypt();
     }
-  };
+  }, [paste.content, doDecrypt]);
+
+  useEffect(() => {
+    const handler = () => retryDecrypt.current();
+    window.addEventListener('click', handler);
+    window.addEventListener('focus', handler);
+    return () => { window.removeEventListener('click', handler); window.removeEventListener('focus', handler); };
+  }, []);
 
   const handlePasswordSubmit = async () => {
     setPasswordError('');
