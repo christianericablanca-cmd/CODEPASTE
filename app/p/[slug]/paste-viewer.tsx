@@ -452,6 +452,9 @@ export function PasteViewer({ paste, isOwner: serverIsOwner, ownerKey: serverOwn
             ) : (
               <MonacoEditor
                 key="editor-view"
+                loading={
+                  <pre className="h-full w-full overflow-auto font-mono text-sm leading-relaxed p-4 m-0" style={{ color: 'var(--vscode-text)', background: 'transparent' }}>{displayContent}</pre>
+                }
                 beforeMount={(monaco) => { registerMonacoThemes(monaco); }}
                 height="100%"
                 language={paste.language}
