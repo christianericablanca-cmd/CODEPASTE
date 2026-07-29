@@ -56,6 +56,7 @@ export function PasteViewer({ paste, isOwner: serverIsOwner, ownerKey: serverOwn
   const [saving, setSaving] = useState(false);
   const [isOwner, setIsOwner] = useState(serverIsOwner);
   const [monacoReady, setMonacoReady] = useState(false);
+  const [createdDate, setCreatedDate] = useState('');
   const [confirmDelete, setConfirmDelete] = useState(false);
   const { notification, showNotification } = useNotification();
   const router = useRouter();
@@ -113,6 +114,12 @@ export function PasteViewer({ paste, isOwner: serverIsOwner, ownerKey: serverOwn
       doDecrypt();
     }
   }, [paste.content, doDecrypt]);
+
+  useEffect(() => {
+    setCreatedDate(new Date(paste.created_at).toLocaleDateString('en-US', {
+      year: 'numeric', month: 'short', day: 'numeric', hour: '2-digit', minute: '2-digit',
+    }));
+  }, [paste.created_at]);
 
   useEffect(() => {
     const handler = () => retryDecrypt.current();
@@ -249,10 +256,6 @@ export function PasteViewer({ paste, isOwner: serverIsOwner, ownerKey: serverOwn
       showNotification('Save error: ' + (e instanceof Error ? e.message : JSON.stringify(e)), 'error');
     } finally { setSaving(false); }
   };
-
-  const createdDate = new Date(paste.created_at).toLocaleDateString('en-US', {
-    year: 'numeric', month: 'short', day: 'numeric', hour: '2-digit', minute: '2-digit',
-  });
 
   return (
     <div className="h-dvh flex flex-col" style={{ background: 'var(--vscode-bg)', color: 'var(--vscode-text)' }}>
