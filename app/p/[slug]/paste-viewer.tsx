@@ -65,8 +65,6 @@ export function PasteViewer({ paste, isOwner: serverIsOwner, ownerKey: serverOwn
   useEffect(() => {
     if (!paste.password_protected) {
       doDecrypt();
-      const fallback = setTimeout(() => doDecrypt(), 500);
-      return () => clearTimeout(fallback);
     }
   }, [paste.content]);
 
@@ -85,8 +83,14 @@ export function PasteViewer({ paste, isOwner: serverIsOwner, ownerKey: serverOwn
     setDecrypting(true);
     setDecryptError(false);
     try {
-      const hash = window.location.hash.replace('#', '');
-      let key = keyOverride || hash || serverOwnerKey;
+      let key = keyOverride || serverOwnerKey;
+      if (!key) {
+        try { key = localStorage.getItem(`ck_${paste.slug}`) || ''; } catch {}
+      }
+      if (!key) {
+        const hash = window.location.hash.replace('#', '');
+        key = hash;
+      }
       if (!key) {
         try {
           await supabaseRef.current!.auth.getUser();
@@ -100,6 +104,7 @@ export function PasteViewer({ paste, isOwner: serverIsOwner, ownerKey: serverOwn
       if (key) {
         const plaintext = await decrypt(paste.content, key);
         setDecrypted(plaintext);
+        try { localStorage.removeItem(`ck_${paste.slug}`); } catch {}
       } else {
         setDecryptError(true);
       }

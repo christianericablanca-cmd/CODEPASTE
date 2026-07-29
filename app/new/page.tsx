@@ -171,6 +171,7 @@ export default function NewPaste() {
       });
       const data = await res.json();
       if (res.ok) {
+        try { localStorage.setItem(`ck_${data.slug}`, encryptionKey); } catch {}
         setCreatedUrl(`${data.url}#${encryptionKey}`);
         showNotification('Paste created!', 'success');
         syncToServer();
