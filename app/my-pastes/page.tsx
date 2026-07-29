@@ -1,19 +1,14 @@
 'use client';
 
 import React, { useEffect, useState } from 'react';
-import { supabase } from '@/lib/supabase';
-import { createClient } from '@/lib/supabase-server';
-import { createClient as createBrowserClient } from '@/lib/supabase-client';
+import { createClient } from '@/lib/supabase-client';
 import Link from 'next/link';
-import { useRouter } from 'next/navigation';
 import { Clock, Eye, FileCode, Globe, Lock, Shield } from 'lucide-react';
 
 export default function MyPastesPage() {
-  const router = useRouter();
   const [pastes, setPastes] = useState<any[] | null>(null);
   const [nickname, setNickname] = useState('');
   const [loading, setLoading] = useState(true);
-  const [notAuthed, setNotAuthed] = useState(false);
 
   useEffect(() => {
     loadPastes();
@@ -25,9 +20,9 @@ export default function MyPastesPage() {
   async function loadPastes() {
     setLoading(true);
     try {
-      const supabaseServer = await createClient();
-      const { data: { user } } = await supabaseServer.auth.getUser();
-      if (!user) { setNotAuthed(true); setLoading(false); return; }
+      const supabase = createClient();
+      const { data: { user } } = await supabase.auth.getUser();
+      if (!user) { window.location.href = '/auth/login'; return; }
 
       const { data: p } = await supabase
         .from('pastes')
@@ -44,7 +39,7 @@ export default function MyPastesPage() {
 
       const n = profile?.data?.nickname || user.user_metadata?.full_name || user.email?.split('@')[0];
       setPastes(p || []);
-      setNickname(n);
+      setNickname(n || '');
     } catch (e) {
       console.error(e);
       setPastes([]);
