@@ -23,6 +23,13 @@ function loadLocal(key: string, fallback: string) {
   return localStorage.getItem(key) || fallback;
 }
 
+function applyThemeClass(cls: string) {
+  const fontClasses = Array.from(document.documentElement.classList)
+    .filter(c => c.startsWith('__'))
+    .join(' ');
+  document.documentElement.className = [cls, fontClasses].filter(Boolean).join(' ');
+}
+
 export function ThemeProvider({ children }: { children: ReactNode }) {
   const [initialized, setInitialized] = useState(false);
   const [theme, setThemeState] = useState<Theme>(defaultTheme);
@@ -33,7 +40,7 @@ export function ThemeProvider({ children }: { children: ReactNode }) {
   const setTheme = (t: Theme) => {
     setThemeState(t);
     localStorage.setItem('codepaste-theme', t.id);
-    document.documentElement.className = t.className;
+    applyThemeClass(t.className);
   };
   const setEditorFontSize = (v: number) => { setEditorFontSizeState(v); localStorage.setItem('codepaste-fontsize', String(v)); };
   const setWordWrap = (v: boolean) => { setWordWrapState(v); localStorage.setItem('codepaste-wordwrap', String(v)); };
@@ -44,9 +51,9 @@ export function ThemeProvider({ children }: { children: ReactNode }) {
     const found = themes.find(t => t.id === savedTheme);
     if (found) {
       setThemeState(found);
-      document.documentElement.className = found.className;
+      applyThemeClass(found.className);
     } else {
-      document.documentElement.className = defaultTheme.className;
+      applyThemeClass(defaultTheme.className);
     }
     const fs = parseInt(loadLocal('codepaste-fontsize', '14'));
     if (!isNaN(fs)) setEditorFontSizeState(fs);

@@ -22,8 +22,6 @@ interface Tab {
   code: string;
 }
 
-let tabCounter = 1;
-
 const defaultCode = `const greet = (name: string): string => {
   return \`Hello, \${name}! Welcome to CodePaste.\`;
 };
@@ -35,17 +33,9 @@ const shareUrl = 'https://codepaste.app/p/abc123';
 console.log('Share this:', shareUrl);
 `;
 
-function createTab(title?: string): Tab {
-  return {
-    id: `tab-${tabCounter++}`,
-    title: title || 'untitled',
-    language: 'typescript',
-    code: title ? '' : defaultCode,
-  };
-}
-
 export default function NewPaste() {
-  const [tabs, setTabs] = useState<Tab[]>([{ id: `tab-${tabCounter++}`, title: 'hello-world', language: 'typescript', code: defaultCode }]);
+  const [tabs, setTabs] = useState<Tab[]>([{ id: 'tab-0', title: 'hello-world', language: 'typescript', code: defaultCode }]);
+  const [tabSeq, setTabSeq] = useState(1);
   const [activeTabId, setActiveTabId] = useState(tabs[0].id);
   const [sidebarTab, setSidebarTab] = useState('files');
   const [showThemePanel, setShowThemePanel] = useState(false);
@@ -83,10 +73,11 @@ export default function NewPaste() {
   }, []);
 
   const addTab = useCallback(() => {
-    const newTab = createTab();
+    const newTab = { id: `tab-${tabSeq}`, title: 'untitled', language: 'typescript', code: '' };
+    setTabSeq(prev => prev + 1);
     setTabs(prev => [...prev, newTab]);
     setActiveTabId(newTab.id);
-  }, []);
+  }, [tabSeq]);
 
   const closeTab = useCallback((id: string, e: React.MouseEvent) => {
     e.stopPropagation();

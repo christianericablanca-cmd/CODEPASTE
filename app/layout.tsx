@@ -89,12 +89,16 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
             }
           `,
         }} />
-        <style>{`
+        <style
+          dangerouslySetInnerHTML={{
+            __html: `
           :root {
             --font-inter: ${inter.style.fontFamily};
             --font-mono: ${jetbrainsMono.style.fontFamily};
           }
-        `}</style>
+        `,
+          }}
+        />
       </head>
       <body>
         <Providers>{children}</Providers>

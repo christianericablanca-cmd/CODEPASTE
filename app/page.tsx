@@ -307,7 +307,7 @@ export default function LandingPage() {
       {/* Footer */}
       <footer className="relative px-4 sm:px-6 py-6 border-t text-xs" style={{ borderColor: 'var(--vscode-border)', color: 'var(--vscode-text-secondary)' }}>
         <div className="max-w-5xl mx-auto flex flex-col sm:flex-row items-center gap-3 sm:gap-0 sm:justify-between text-center sm:text-left">
-          <span>&copy; {new Date().getFullYear()} CodePaste. Built for developers.</span>
+          <span suppressHydrationWarning>&copy; {new Date().getFullYear()} CodePaste. Built for developers.</span>
           <div className="flex items-center gap-4">
             <Link href="/new" className="hover:text-[var(--vscode-text)] transition-colors">New Paste</Link>
             <Link href="/api-docs" className="hover:text-[var(--vscode-text)] transition-colors">API</Link>
